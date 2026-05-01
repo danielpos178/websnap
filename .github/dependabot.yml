@@ -1,19 +1,19 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    target-branch: "develop"
+    target-branch: "main"
     directory: "/"
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
-    target-branch: "develop"
+    target-branch: "main"
     directory: "/"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions"
-    target-branch: "develop"
+    target-branch: "main"
     directory: "/"
     schedule:
       interval: "daily"
     assignees:
-      - "PabloLec"
+      - "danielpos178"

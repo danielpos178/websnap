@@ -1,18 +1,16 @@
 name: Generate and update demo GIFs
-
 on:
   push:
     branches:
-      - 'develop'
+      - 'main'
   workflow_dispatch:
-
 jobs:
   generate-and-push-gifs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: ss_15_tps_80
-        uses: PabloLec/website-to-gif@develop
+        uses: danielpos178/website-to-gif@main
         with:
           url: "https://docs.github.com/en/get-started/quickstart/be-social"
           save_path: '/docs/images'
@@ -23,7 +21,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_25_tps_100
-        uses: PabloLec/website-to-gif@develop
+        uses: danielpos178/website-to-gif@main
         with:
           url: "https://docs.github.com/en/get-started/quickstart/be-social"
           save_path: '/docs/images'
@@ -33,7 +31,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_50_tps_50
-        uses: PabloLec/website-to-gif@develop
+        uses: danielpos178/website-to-gif@main
         with:
           url: "https://docs.github.com/en/get-started/quickstart/be-social"
           save_path: '/docs/images'
@@ -43,7 +41,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_50_tps_100
-        uses: PabloLec/website-to-gif@develop
+        uses: danielpos178/website-to-gif@main
         with:
           url: "https://docs.github.com/en/get-started/quickstart/be-social"
           save_path: '/docs/images'
@@ -53,7 +51,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_50_tps_200
-        uses: PabloLec/website-to-gif@develop
+        uses: danielpos178/website-to-gif@main
         with:
           url: "https://docs.github.com/en/get-started/quickstart/be-social"
           save_path: '/docs/images'
@@ -63,12 +61,12 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: animated_no_scroll
-        uses: PabloLec/website-to-gif@develop
+        uses: danielpos178/website-to-gif@main
         with:
           url: "https://github.com/signup"
           save_path: "/docs/images"
           file_name: animated_no_scroll
-          no_scoll: true
+          no_scroll: true
           time_per_frame: 100
           time_between_frames: 100
           number_of_frames: 50
@@ -82,8 +80,8 @@ jobs:
             ./docs/images/*
       - name: Commit file to GH repo
         run: |
-          git config --global user.name "PabloLec/website-to-gif"
+          git config --global user.name "danielpos178/website-to-gif"
           git config --global user.email "action@github.com"
           git add .
-          git commit -m 'Update demo GIFs'
+          git commit -m 'Update demo GIFs' || echo "No changes to commit"
           git push
