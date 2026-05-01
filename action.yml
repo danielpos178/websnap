@@ -73,6 +73,14 @@ inputs:
     description: Number of frames to be captured if no_scroll is true, defaults to 20
     required: false
     default: "20"
+  dark_mode:
+    description: Capture page in dark mode using CSS invert filter, defaults to false
+    required: false
+    default: "false"
+  hide_elements:
+    description: Comma-separated list of CSS selectors to hide before capture, e.g. ".cookie-banner, #navbar, .ads"
+    required: false
+    default: ""
 
 runs:
   using: "docker"

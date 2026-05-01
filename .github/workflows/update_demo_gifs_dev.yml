@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: ss_15_tps_80
-        uses: danielpos178/website-to-gif@main
+        uses: danielpos178/websnap@main
         with:
           url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
           save_path: "/docs/images"
@@ -21,7 +21,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_25_tps_100
-        uses: danielpos178/website-to-gif@main
+        uses: danielpos178/websnap@main
         with:
           url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
           save_path: "/docs/images"
@@ -32,7 +32,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_50_tps_50
-        uses: danielpos178/website-to-gif@main
+        uses: danielpos178/websnap@main
         with:
           url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
           save_path: "/docs/images"
@@ -43,7 +43,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_50_tps_100
-        uses: danielpos178/website-to-gif@main
+        uses: danielpos178/websnap@main
         with:
           url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
           save_path: "/docs/images"
@@ -54,7 +54,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: ss_50_tps_200
-        uses: danielpos178/website-to-gif@main
+        uses: danielpos178/websnap@main
         with:
           url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
           save_path: "/docs/images"
@@ -65,7 +65,7 @@ jobs:
           window_width: 1280
           window_height: 720
       - name: animated_no_scroll
-        uses: danielpos178/website-to-gif@main
+        uses: danielpos178/websnap@main
         with:
           url: "https://github.com/home"
           save_path: "/docs/images"
@@ -84,7 +84,7 @@ jobs:
             ./docs/images/*
       - name: Commit file to GH repo
         run: |
-          git config --global user.name "danielpos178/website-to-gif"
+          git config --global user.name "danielpos178/websnap"
           git config --global user.email "action@github.com"
           git add .
           git commit -m 'Update demo GIFs' || echo "No changes to commit"

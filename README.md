@@ -1,126 +1,140 @@
-# website-to-gif (fork) [![GitHub](https://img.shields.io/github/license/danielpos178/website-to-gif)](https://github.com/danielpos178/website-to-gif/blob/main/LICENSE)
+# Websnap 
+
+![GitHub License](https://img.shields.io/github/license/danielpos178/websnap)
+
+
+
 
 <p align="center">
-    <img src="docs/images/ss_15_tps_80.gif">
+    <img src="docs/images/ss_15_tps_80.gif" alt="Websnap Demo">
 </p>
+
 <p align="center">
-    <b>This Github Action automatically creates an animated GIF or WebP from a given web page to display on your project README (or anywhere else).</b>
+    <b>A GitHub Action to automatically generate animated GIFs or WebP images from web pages.</b>
 </p>
 
-## About this fork
+## Overview
 
-This is a fork of [PabloLec/website-to-gif](https://github.com/PabloLec/website-to-gif) with the following fix applied:
+Websnap captures website scrolling animations or static snapshots directly within your GitHub Actions pipeline. This is a fork of [PabloLec/website-to-gif](https://github.com/PabloLec/website-to-gif) that fixes the `no_scroll` bug and adds a few new features.
 
-- **Fixed `no_scroll` parameter** — the original action had a typo (`no_scoll`) in `action.yml` that didn't match the environment variable name read by the Python script (`INPUT_NO_SCROLL`), meaning the no-scroll mode never actually worked. This fork corrects the parameter name to `no_scroll` so it functions as documented.
+### Added Features
+- **Dark Mode:** Inject CSS filters to capture sites in dark mode automatically (`dark_mode: true`).
+- **Hide Elements:** Remove sticky navbars, cookie banners, or ads before capturing using CSS selectors.
+- **Fixed `no_scroll`:** The original repo had a typo that broke this feature. It works here now.
+- **WebP Output:** Websnap supports outputting to `WebP`. WebP rendering takes longer than GIF generation, but it results in a smaller file size without losing quality.
+
+---
 
 ## Usage
 
-In your GitHub repo, create a workflow file or extend an existing one. (e.g. `.github/workflows/demo.yml`)
-
-You must also include a step to `checkout` and commit back to the repo.
-
-`.github/workflows/demo.yml`
+Create a workflow file (e.g., `.github/workflows/generate-preview.yml`) in your repository:
 
 ```yaml
-name: Generate demo file
+name: Generate Website Preview
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
 
 jobs:
-  generate-gif:
+  capture:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Website to file
-        uses: danielpos178/website-to-gif@main
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Capture Website
+        uses: danielpos178/websnap@main
         with:
           url: "https://docs.github.com/en/get-started"
-      - name: Commit file to GH repo
+          file_name: "demo"
+          dark_mode: true
+          hide_elements: ".cookie-banner"
+
+      - name: Commit and Push
         run: |
-          git config --global user.name "website-to-gif[bot]"
+          git config --global user.name "websnap[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m 'Update demo file' || echo "No changes to commit"
+          git commit -m "Update website preview" || echo "No changes to commit"
           git push
 ```
 
-### Capturing without scrolling (fixed in this fork)
+---
 
-Use `no_scroll: true` to capture a static or animated screenshot without any page scrolling:
+## Inputs
+
+| Parameter | Description | Default | Example |
+|---|---|---|---|
+| `url` | Web page URL to be captured. **(Required)** | - | `"https://docs.github.com"` |
+| `save_path` | Absolute path for saving the file. Directory must exist. | `/` (repo root) | `"/docs/images/"` |
+| `file_format` | Output file format (`GIF` or `WebP`). | `GIF` | `"WebP"` |
+| `file_name` | Output file name without extension or path. | `demo` | `"ss_25_tps_100"` |
+| `window_width` | Browser window width in pixels. | `1920` | `1366` |
+| `window_height` | Browser window height in pixels. | `1080` | `768` |
+| `start_y` | Vertical position to start capture in pixels. | `0` | `0` |
+| `stop_y` | Vertical position to stop capture. | Bottom of page | `800` |
+| `final_width` | Width of the final output image. | `640` | `1024` |
+| `final_height` | Height of the final output image. | `360` | `576` |
+| `scroll_step` | Pixels to scroll per frame. | `25` | `50` |
+| `time_per_frame`| Duration of each frame in milliseconds. | `100` | `200` |
+| `start_delay` | Delay before capturing begins in milliseconds. | `0` | `100` |
+| `no_scroll` | Disable scrolling to capture a static view. | `false` | `true` |
+| `time_between_frames`| Interval between frame captures when `no_scroll` is true. | `100` | `200` |
+| `number_of_frames`| Number of frames to capture when `no_scroll` is true. | `20` | `50` |
+| `resizing_filter`| Filter used to resize frames (see Pillow docs). | `LANCZOS` | `"LANCZOS"` |
+| `dark_mode` | Capture page in dark mode using CSS invert filter. | `false` | `true` |
+| `hide_elements` | Comma-separated CSS selectors to hide before capture. | - | `".cookie-banner, #navbar"` |
+
+---
+
+## Examples
+
+How `scroll_step` and `time_per_frame` affect the output pacing and file size:
+
+### Smooth & Slow
+**Parameters:** `scroll_step: 15`, `time_per_frame: 80`  
+![Smooth and slow scroll](docs/images/ss_15_tps_80.gif)
+
+### Balanced (Recommended)
+**Parameters:** `scroll_step: 25`, `time_per_frame: 100`  
+![Balanced scroll](docs/images/ss_25_tps_100.gif)
+
+### Fast Scroll
+**Parameters:** `scroll_step: 50`, `time_per_frame: 50`  
+![Fast scroll](docs/images/ss_50_tps_50.gif)
+
+### Fast Step, Normal Pacing
+**Parameters:** `scroll_step: 50`, `time_per_frame: 100`  
+![Fast step normal pacing](docs/images/ss_50_tps_100.gif)
+
+### Staggered Scroll
+**Parameters:** `scroll_step: 50`, `time_per_frame: 200`  
+![Staggered scroll](docs/images/ss_50_tps_200.gif)
+
+### Capturing Without Scrolling
+
+You can disable page scrolling entirely to create animated snapshots of a single view. This is useful for capturing in-page animations or loaders.
 
 ```yaml
-- name: Website to WebP
-  uses: danielpos178/website-to-gif@main
+- name: Capture Static View
+  uses: danielpos178/websnap@main
   with:
     url: "https://yoursite.com"
-    file_format: "WebP"
-    file_name: "demo"
     no_scroll: true
     time_per_frame: 100
     time_between_frames: 100
     number_of_frames: 50
-    window_width: 1920
-    window_height: 1080
 ```
 
-> **Note:** In the original repo, `no_scoll: true` (with the typo) was silently ignored and the page would always scroll. This fork fixes that — `no_scroll: true` now works correctly.
+![Animated no scroll](docs/images/animated_no_scroll.gif)
 
-See the [official GitHub Actions docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions) to further customize your workflow.
-
-## Inputs
-
-| Name | Description | Default | Example |
-|---|---|---|---|
-| url | Web page URL to be captured. **Required** | | `url: "https://docs.github.com"` |
-| save_path | File saving path, starts with `/`. Make sure the path already exists — this action will not create directories. | repo root | `save_path: "/docs/images/"` |
-| file_format | Output file format, supports `GIF` and `WebP` | `GIF` | `file_format: "WebP"` |
-| file_name | File name, **do not include extension or path** | `demo` | `file_name: "ss_25_tps_100"` |
-| window_width | Browser window width | `1920` (px) | `window_width: 1366` |
-| window_height | Browser window height | `1080` (px) | `window_height: 768` |
-| start_y | Position where capture should start | `0` (px) | `start_y: 0` |
-| stop_y | Position where capture should stop | bottom of page | `stop_y: 800` |
-| final_width | Final file width | `640` (px) | `final_width: 1024` |
-| final_height | Final file height | `360` (px) | `final_height: 576` |
-| scroll_step | Number of pixels per scroll step | `25` (px) | `scroll_step: 50` |
-| time_per_frame | Milliseconds per frame | `100` (ms) | `time_per_frame: 200` |
-| start_delay | Milliseconds to wait before starting capture | `0` (ms) | `start_delay: 100` |
-| no_scroll | Capture without page scroll, discards all scroll-related parameters. **Fixed in this fork.** | `false` | `no_scroll: true` |
-| time_between_frames | Milliseconds between frame captures when `no_scroll` is true | `100` (ms) | `time_between_frames: 200` |
-| number_of_frames | Number of frames to capture when `no_scroll` is true | `20` | `number_of_frames: 50` |
-| resizing_filter | Filter used to resize frames, see [Pillow docs](https://pillow.readthedocs.io/en/stable/reference/Image.html?highlight=resize#PIL.Image.Image.resize) | `LANCZOS` | `resizing_filter: "LANCZOS"` |
-
-## Examples
-
-Increase or decrease `scroll_step` and `time_per_frame` to modify file rendering and file size.
-
-#### `scroll_step: 15` `time_per_frame: 80`
-![](docs/images/ss_15_tps_80.gif)
-
-#### `scroll_step: 25` `time_per_frame: 100`
-![](docs/images/ss_25_tps_100.gif)
-
-#### `scroll_step: 50` `time_per_frame: 50`
-![](docs/images/ss_50_tps_50.gif)
-
-#### `scroll_step: 50` `time_per_frame: 100`
-![](docs/images/ss_50_tps_100.gif)
-
-#### `scroll_step: 50` `time_per_frame: 200`
-![](docs/images/ss_50_tps_200.gif)
-
-You can also capture pages without scrolling:
-
-#### `no_scroll: true` `time_per_frame: 100` `time_between_frames: 100` `number_of_frames: 50`
-![](docs/images/animated_no_scroll.gif)
-
-## WebP
-
-WebP rendering will take **significantly longer** than GIF due to lossless quality and file size optimization.
+---
 
 ## Contributing
 
-Feel free to contribute!
-To suggest a new feature or report a bug, open a new [issue](https://github.com/danielpos178/website-to-gif/issues).
+Feel free to open an [issue](https://github.com/danielpos178/websnap/issues) or submit a pull request if you find a bug or have a feature request.
+
+---
 
 ## Credits
 
