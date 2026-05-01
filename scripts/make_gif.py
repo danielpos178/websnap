@@ -1,28 +1,44 @@
 import os
-from time import sleep
-from PIL import Image
-from io import BytesIO
 from base64 import b64decode
+from io import BytesIO
+from time import sleep
+
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 
-_FORMAT = os.getenv("INPUT_FILE_FORMAT").upper().strip()
-_FILE_NAME = os.getenv("INPUT_FILE_NAME")
-_URL = os.getenv("INPUT_URL")
-_WINDOW_W = int(os.getenv("INPUT_WINDOW_WIDTH"))
-_WINDOW_H = int(os.getenv("INPUT_WINDOW_HEIGHT"))
-_START_Y = os.getenv("INPUT_START_Y")
-_STOP_Y = os.getenv("INPUT_STOP_Y")
-_FINAL_W = os.getenv("INPUT_FINAL_WIDTH")
-_FINAL_H = os.getenv("INPUT_FINAL_HEIGHT")
-_SCROLL_STEP = os.getenv("INPUT_SCROLL_STEP")
-_TIME_PER_FRAME = os.getenv("INPUT_TIME_PER_FRAME")
-_RESIZING_FILTER = os.getenv("INPUT_RESIZING_FILTER").upper().strip()
-_START_DELAY = int(os.getenv("INPUT_START_DELAY"))
-_NO_SCROLL = bool(os.getenv("INPUT_NO_SCROLL"))
-_TIME_BETWEEN_FRAMES = int(os.getenv("INPUT_TIME_BETWEEN_FRAMES"))
-_NUMBER_OF_FRAMES = int(os.getenv("INPUT_NUMBER_OF_FRAMES"))
+
+def _env(name, default=None):
+    v = os.getenv(name)
+    if v is None or v == "":
+        return default
+    return v
+
+
+_FORMAT = (_env("INPUT_FILE_FORMAT", "GIF") or "GIF").upper().strip()
+_FILE_NAME = _env("INPUT_FILE_NAME", "demo")
+_URL = _env("INPUT_URL")
+_WINDOW_W = int(_env("INPUT_WINDOW_WIDTH", "1920"))
+_WINDOW_H = int(_env("INPUT_WINDOW_HEIGHT", "1080"))
+_START_Y = int(_env("INPUT_START_Y", "0"))
+_STOP_Y = int(_env("INPUT_STOP_Y", "0"))
+_FINAL_W = int(_env("INPUT_FINAL_WIDTH", "640"))
+_FINAL_H = int(_env("INPUT_FINAL_HEIGHT", "360"))
+_SCROLL_STEP = int(_env("INPUT_SCROLL_STEP", "25"))
+_TIME_PER_FRAME = int(_env("INPUT_TIME_PER_FRAME", "100"))
+_RESIZING_FILTER = (
+    (_env("INPUT_RESIZING_FILTER", "LANCZOS") or "LANCZOS").upper().strip()
+)
+_START_DELAY = int(_env("INPUT_START_DELAY", "0"))
+_NO_SCROLL = str(_env("INPUT_NO_SCROLL", "false")).strip().lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
+_TIME_BETWEEN_FRAMES = int(_env("INPUT_TIME_BETWEEN_FRAMES", "100"))
+_NUMBER_OF_FRAMES = int(_env("INPUT_NUMBER_OF_FRAMES", "20"))
 
 _DRIVER: webdriver.Firefox = None
 

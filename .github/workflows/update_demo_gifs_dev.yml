@@ -2,7 +2,7 @@ name: Generate and update demo GIFs
 on:
   push:
     branches:
-      - 'main'
+      - "main"
   workflow_dispatch:
 jobs:
   generate-and-push-gifs:
@@ -12,8 +12,8 @@ jobs:
       - name: ss_15_tps_80
         uses: danielpos178/website-to-gif@main
         with:
-          url: "https://docs.github.com/en/get-started/quickstart/be-social"
-          save_path: '/docs/images'
+          url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
+          save_path: "/docs/images"
           file_format: gif
           file_name: ss_15_tps_80
           scroll_step: 15
@@ -23,8 +23,9 @@ jobs:
       - name: ss_25_tps_100
         uses: danielpos178/website-to-gif@main
         with:
-          url: "https://docs.github.com/en/get-started/quickstart/be-social"
-          save_path: '/docs/images'
+          url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
+          save_path: "/docs/images"
+          file_format: gif
           file_name: ss_25_tps_100
           scroll_step: 25
           time_per_frame: 100
@@ -33,8 +34,9 @@ jobs:
       - name: ss_50_tps_50
         uses: danielpos178/website-to-gif@main
         with:
-          url: "https://docs.github.com/en/get-started/quickstart/be-social"
-          save_path: '/docs/images'
+          url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
+          save_path: "/docs/images"
+          file_format: gif
           file_name: ss_50_tps_50
           scroll_step: 50
           time_per_frame: 50
@@ -43,8 +45,9 @@ jobs:
       - name: ss_50_tps_100
         uses: danielpos178/website-to-gif@main
         with:
-          url: "https://docs.github.com/en/get-started/quickstart/be-social"
-          save_path: '/docs/images'
+          url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
+          save_path: "/docs/images"
+          file_format: gif
           file_name: ss_50_tps_100
           scroll_step: 50
           time_per_frame: 100
@@ -53,8 +56,9 @@ jobs:
       - name: ss_50_tps_200
         uses: danielpos178/website-to-gif@main
         with:
-          url: "https://docs.github.com/en/get-started/quickstart/be-social"
-          save_path: '/docs/images'
+          url: "https://docs.github.com/en/get-started/start-your-journey/finding-inspiration-on-github"
+          save_path: "/docs/images"
+          file_format: gif
           file_name: ss_50_tps_200
           scroll_step: 50
           time_per_frame: 200
