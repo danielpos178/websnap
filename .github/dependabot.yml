@@ -16,4 +16,4 @@ updates:
     schedule:
       interval: "daily"
     assignees:
-      - "danielpos178"
+      - "danielpos178" 
