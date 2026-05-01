@@ -112,6 +112,7 @@ You can also capture pages without scrolling:
 
 #### `no_scroll: true` `time_per_frame: 100` `time_between_frames: 100` `number_of_frames: 50`
 ![](docs/images/animated_no_scroll.gif)
+> Demo website: [https://blobmixer.14islands.com/](https://blobmixer.14islands.com/)
 
 ## WebP
 

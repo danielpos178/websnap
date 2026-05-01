@@ -67,13 +67,13 @@ jobs:
       - name: animated_no_scroll
         uses: danielpos178/website-to-gif@main
         with:
-          url: "https://github.com/signup"
+          url: "https://blobmixer.14islands.com/"
           save_path: "/docs/images"
           file_name: animated_no_scroll
           no_scroll: true
           time_per_frame: 100
           time_between_frames: 100
-          number_of_frames: 50
+          number_of_frames: 120
           window_width: 1280
           window_height: 720
       - name: Archive GIFs
